@@ -6,7 +6,6 @@ require 'peddler'
 require 'pony'
 require 'rest-client'
 require 'time'
-require 'yaml'
 require 'csv'
 ###### End Required gems and files #####
 
