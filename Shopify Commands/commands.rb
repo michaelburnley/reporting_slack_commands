@@ -7,22 +7,18 @@ require 'pony'
 require 'rest-client'
 require 'time'
 require 'csv'
+require 'open-uri'
 ###### End Required gems and files #####
 
 ###### Basic Config Information #####
 ZOOJI = "https://#{ENV['ZOOJI_SHOPIFY_API_KEY']}:#{ENV['ZOOJI_SHOPIFY_SHARED_SECRET']}@zooji.myshopify.com/admin"
 ZOOSHOO = "https://#{ENV['ZOOSHOO_SHOPIFY_API_KEY']}:#{ENV['ZOOSHOO_SHOPIFY_SHARED_SECRET']}@zooshoo.myshopify.com/admin"
 JADAMS = "https://#{ENV['JADAMS_SHOPIFY_API_KEY']}:#{ENV['JADAMS_SHOPIFY_SHARED_SECRET']}@j-adams.myshopify.com/admin"
-# SC = "https://webservices.solidcommerce.com/ws.asmx/GetOrder?appKey=#{ENV['SC_APP_KEY']}&securityKey=#{ENV['SC_SECURITY_KEY']}&xslUri=string&saleID=498732264&isLoadPayments=string&isLoadWarehouseName=string"
 ###### Basic Config Information #####
 
 def request(url_base, request, url, params = nil)
 	RestClient.send(request.to_sym, "#{url_base}#{url}.json", { params: params.to_h})
 end
-
-# def request(url_base, request, url, params = nil)
-# 	RestClient.send(request.to_sym, "#{url_base}#{url}.json", { params: params.to_h})
-# end
 
 def refund_info(dates, site)
 	params, refunded_orders_ids, refunded_orders_names = [],[],[]
