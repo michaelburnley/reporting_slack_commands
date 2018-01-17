@@ -2,6 +2,7 @@ ENV['SSL_CERT_FILE'] = 'cacert.pem'
 
 ###### Required gems and files #####
 require 'json'
+require 'securerandom'
 require 'peddler'
 require 'pony'
 require 'rest-client'
@@ -112,6 +113,7 @@ def sales_info(dates, site)
 end
 ###### Grab Top Selling SKUs and Amount Sold for a Timeframe ######
 
+
 ###### Lookup an Order by Order Number ######
 def order_lookup(order_name, site)
 	if order_name.include? "ZJI"
@@ -158,5 +160,22 @@ def customer_lookup(email, site)
 end
 ###### Lookup a Customer ######
 
+def add_bulk_discounts(prefix, amt_discounts, site)
+	batch_id = 0
+	codes = ['discount_codes',[]]
+
+	gen_codes = []
+	i = 0
+
+	while i < amt_discounts do
+		code = prefix + SecureRandom.base64(10)
+		codes[0][i] = code
+	end
+	puts codes
+	# discounts = JSON.parse(request(site, 'post', "/price_rules/#{batch_id}/batch.json"))
+end
+
 
 #puts order_lookup("#105154", ZOOSHOO)
+
+add_bulk_discounts("abc", 5, ZOOSHOO)
