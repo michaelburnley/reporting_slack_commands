@@ -1,14 +1,14 @@
 ENV['SSL_CERT_FILE'] = 'cacert.pem'
 
 ###### Required gems and files #####
+require 'csv'
 require 'json'
-require 'securerandom'
+require 'open-uri'
 require 'peddler'
 require 'pony'
 require 'rest-client'
+require 'securerandom'
 require 'time'
-require 'csv'
-require 'open-uri'
 ###### End Required gems and files #####
 
 ###### Basic Config Information #####
@@ -180,6 +180,18 @@ def add_discount(code, site)
 	puts "Discount code #{code} created."
 end
 
-#puts order_lookup("#105154", ZOOSHOO)
+def check_code(code, site)
+	discount_id = JSON.parse(request(site, 'get', "/discount_codes/lookup.json?code=#{code}").body)
+	id = discount_id.split('/')[-1]
+	discount = JSON.parse(request(site, 'get', "/price_rules/#{id}/discount_codes/#{id}").body)
+	price_rule_details = JSON.parse(request(site, 'get', "/price_rules/#{discount['discount_code']['price_rule_id']}").body)
 
-add_bulk_discounts("abc", 5, ZOOSHOO)
+	discount_info = {
+		type => price_rule_details['value_type'],
+		value => price_rule_details['value'],
+		target_type => price_rule_details['target_type']
+	}
+end
+
+#puts order_lookup("#105154", ZOOSHOO)
+# add_bulk_discounts("abc", 5, ZOOSHOO)
