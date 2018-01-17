@@ -160,21 +160,25 @@ def customer_lookup(email, site)
 end
 ###### Lookup a Customer ######
 
+###### Lookup a Customer ######
 def add_bulk_discounts(prefix, amt_discounts, site)
-	batch_id = 0
-	codes = ['discount_codes',[]]
-
+	batch_id, i = 0, 0
 	gen_codes = []
-	i = 0
 
-	while i < amt_discounts do
+	while i < amt_discounts
 		code = prefix + SecureRandom.base64(10)
-		codes[0][i] = code
+		gen_codes[i] = ['code', code]
+		i += 1
 	end
-	puts codes
-	# discounts = JSON.parse(request(site, 'post', "/price_rules/#{batch_id}/batch.json"))
+	codes = ['discount_codes', gen_codes]
+	discounts = JSON.parse(request(site, 'post', "/price_rules/#{batch_id}/batch", codes).body)
 end
 
+def add_discount(code, site)
+	discount_code = ['discount_code',['code', code]]
+	discount = JSON.parse(request(site, 'post', "/price_rules/#{id}/discount_codes", codes).body)
+	puts "Discount code #{code} created."
+end
 
 #puts order_lookup("#105154", ZOOSHOO)
 
