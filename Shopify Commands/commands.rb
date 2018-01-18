@@ -166,7 +166,7 @@ def add_bulk_discounts(prefix, amt_discounts, site)
 	gen_codes = []
 
 	while i < amt_discounts
-		code = prefix + SecureRandom.base64(10)
+		code = (prefix + SecureRandom.base64(10)).tr('//','').tr('=','')
 		gen_codes[i] = ['code', code]
 		i += 1
 	end
